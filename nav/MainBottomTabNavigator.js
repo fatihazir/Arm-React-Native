@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { SharedContext } from '../store/context/SharedContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function HomeScreen() {
     return (
@@ -22,6 +24,11 @@ function SettingsScreen() {
 const Tab = createBottomTabNavigator();
 
 export default function MainBottomTabNavigator() {
+    const currentContext = useContext(SharedContext)
+    AsyncStorage.getItem("user").then(user => {
+        console.log("async retrieve : ", user);
+    })
+
     return (
         <NavigationContainer independent={true}>
             <Tab.Navigator>

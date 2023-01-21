@@ -14,7 +14,8 @@ import { links } from '../utils/lib/Links';
 
 export default function LoginScreen() {
     const currentContext = useContext(SharedContext)
-    const { navigation, dispatch } = useNavigation()
+    const { dispatch } = useNavigation()
+    const navigation = useNavigation()
 
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
@@ -44,6 +45,7 @@ export default function LoginScreen() {
             url: links.login,
             body,
             successFunction: (data) => {
+                currentContext.SetUser(data.data)
                 currentContext.setShowGlobalLoading(false)
                 setShowSuccessModal(true)
 
