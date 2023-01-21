@@ -81,7 +81,7 @@ export default function RegisterScreen() {
     return (
         <>
             <ErrorModal show={showErrorModal} text={errorModalBodyText} onSuccess={OnErrorModalButtonPressed} />
-            <SuccessModal show={showSuccessModal} text={"User registered. Redirecting..."} onSuccess={null} />
+            <SuccessModal show={showSuccessModal} text={"User registered. Redirecting..."} onSuccess={() => { }} />
             <ScrollView style={styles.container}>
                 <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }}>
                     <Image

@@ -12,7 +12,7 @@ import Routes from '../utils/Routes';
 import Apibase from '../utils/lib/Apibase'
 import { links } from '../utils/lib/Links';
 
-export default function LoginScreen() {
+export default function HomeScreen() {
     const currentContext = useContext(SharedContext)
     const navigation = useNavigation()
 
@@ -44,13 +44,14 @@ export default function LoginScreen() {
             url: links.login,
             body,
             successFunction: (data) => {
+                console.log("success");
                 currentContext.setShowGlobalLoading(false)
                 setShowSuccessModal(true)
 
                 setTimeout(() => {
                     setShowSuccessModal(false)
-                    navigation.navigate(Routes.HomeScreen)
                     currentContext.setShowOverlay(false)
+                    navigation.navigate(Routes.LoginScreen)
                 }, 1500);
             },
             errorFunction: (data) => {
@@ -68,7 +69,7 @@ export default function LoginScreen() {
     return (
         <>
             <ErrorModal show={showErrorModal} text={errorModalBodyText} onSuccess={OnErrorModalButtonPressed} />
-            <SuccessModal show={showSuccessModal} text={"User login success. Redirecting..."} onSuccess={() => { }} />
+            <SuccessModal show={showSuccessModal} text={"User registered. Redirecting..."} onSuccess={null} />
             <ScrollView style={styles.container}>
                 <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }}>
                     <Image
@@ -76,33 +77,7 @@ export default function LoginScreen() {
                         resizeMode='cover'
                         source={require('../assets/authPagePhoto.webp')}
                     />
-                    <Input
-                        style={styles.eachInput}
-                        value={email}
-                        onChangeText={setEmail}
-                        placeholder={"Email"}
-                        keyboardType="email-address"
-                    />
-                    <Input
-                        style={styles.eachInput}
-                        value={password}
-                        onChangeText={setPassword}
-                        placeholder={"Password"}
-                        secureTextEntry={true}
-                    />
-                    <CustomButton
-                        text={"Login"}
-                        onPress={Login}
-                        containerStyle={styles.registerButtonContainer}
-                        buttonColor={colors.primary}
-                    />
-                    <Text style={styles.signInText}>Do not you have an account? </Text>
-                    <CustomButton
-                        text={"Sign up"}
-                        onPress={OnGoToSignUpPagePressed}
-                        containerStyle={styles.signInButtonContainer}
-                        buttonColor={colors.secondary}
-                    />
+                    <Text>Homee</Text>
                 </KeyboardAvoidingView>
             </ScrollView>
         </>

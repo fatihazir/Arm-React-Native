@@ -1,6 +1,7 @@
 const Routes = {
     RegisterScreen: "RegisterScreen",
-    LoginScreen: "LoginScreen"
+    LoginScreen: "LoginScreen",
+    HomeScreen: "HomeScreen"
 }
 
 export default Routes

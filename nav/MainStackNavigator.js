@@ -3,19 +3,22 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Routes from '../utils/Routes';
 import RegisterScreen from '../screens/RegisterScreen';
-import AuthHeader from '../components/AuthHeader';
+import BasicHeader from '../components/BasicHeader';
 import LoginScreen from '../screens/LoginScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 const Stack = createNativeStackNavigator();
 
 const MainStackNavigator = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={Routes.RegisterScreen}>
+            <Stack.Navigator initialRouteName={Routes.LoginScreen}>
                 <Stack.Screen name={Routes.RegisterScreen} component={RegisterScreen}
-                    options={{ header: (() => <AuthHeader title="Register" />) }} />
+                    options={{ header: (() => <BasicHeader title="Register" />) }} />
                 <Stack.Screen name={Routes.LoginScreen} component={LoginScreen}
-                    options={{ header: (() => <AuthHeader title="Login" />) }} />
+                    options={{ header: (() => <BasicHeader title="Login" />) }} />
+                <Stack.Screen name={Routes.HomeScreen} component={HomeScreen}
+                    options={{ header: (() => <BasicHeader title="HomePage" />) }} />
             </Stack.Navigator>
         </NavigationContainer>
     )

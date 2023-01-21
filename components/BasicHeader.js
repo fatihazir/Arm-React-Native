@@ -5,7 +5,7 @@ import {
     View
 } from 'react-native';
 
-const AuthHeader = ({ title }) => {
+const BasicHeader = ({ title }) => {
     return (
         <View style={styles.container}>
             <View style={styles.rowParent}>
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AuthHeader;
+export default BasicHeader;
