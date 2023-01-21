@@ -1,7 +1,7 @@
 const Routes = {
     RegisterScreen: "RegisterScreen",
     LoginScreen: "LoginScreen",
-    HomeScreen: "HomeScreen"
+    MainBottomTabNavigator: "MainBottomTabNavigator"
 }
 
 export default Routes

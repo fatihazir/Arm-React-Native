@@ -6,7 +6,7 @@ import Input from '../components/Input';
 import SuccessModal from '../components/SuccessModal';
 import { SharedContext } from '../store/context/SharedContext';
 import { height_screen, width_screen } from '../utils/Dimensions';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, StackActions } from '@react-navigation/native';
 import { colors } from '../utils/lib/Colors';
 import Routes from '../utils/Routes';
 import Apibase from '../utils/lib/Apibase'
@@ -14,7 +14,7 @@ import { links } from '../utils/lib/Links';
 
 export default function LoginScreen() {
     const currentContext = useContext(SharedContext)
-    const navigation = useNavigation()
+    const { navigation, dispatch } = useNavigation()
 
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
@@ -49,8 +49,8 @@ export default function LoginScreen() {
 
                 setTimeout(() => {
                     setShowSuccessModal(false)
-                    navigation.navigate(Routes.HomeScreen)
                     currentContext.setShowOverlay(false)
+                    dispatch(StackActions.replace(Routes.MainBottomTabNavigator));
                 }, 1500);
             },
             errorFunction: (data) => {

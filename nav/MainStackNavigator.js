@@ -5,7 +5,7 @@ import Routes from '../utils/Routes';
 import RegisterScreen from '../screens/RegisterScreen';
 import BasicHeader from '../components/BasicHeader';
 import LoginScreen from '../screens/LoginScreen';
-import HomeScreen from '../screens/HomeScreen';
+import MainBottomTabNavigator from './MainBottomTabNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,8 +17,8 @@ const MainStackNavigator = () => {
                     options={{ header: (() => <BasicHeader title="Register" />) }} />
                 <Stack.Screen name={Routes.LoginScreen} component={LoginScreen}
                     options={{ header: (() => <BasicHeader title="Login" />) }} />
-                <Stack.Screen name={Routes.HomeScreen} component={HomeScreen}
-                    options={{ header: (() => <BasicHeader title="HomePage" />) }} />
+                <Stack.Screen name={Routes.MainBottomTabNavigator} component={MainBottomTabNavigator}
+                    options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     )
