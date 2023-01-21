@@ -9,6 +9,8 @@ import { height_screen, width_screen } from '../utils/Dimensions';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../utils/lib/Colors';
 import Routes from '../utils/Routes';
+import Apibase from '../utils/lib/Apibase'
+import { links } from '../utils/lib/Links';
 
 export default function RegisterScreen() {
     const currentContext = useContext(SharedContext)
@@ -22,12 +24,6 @@ export default function RegisterScreen() {
     const [showErrorModal, setShowErrorModal] = useState(false)
     const [errorModalBodyText, setErrorModalBodyText] = useState()
     const [showSuccessModal, setShowSuccessModal] = useState(false)
-    const [successModalBodyText, setSuccessModalBodyText] = useState()
-
-    function OnSuccessModalButtonPressed() {
-        setShowSuccessModal(false)
-        currentContext.setShowOverlay(false)
-    }
 
     function OnErrorModalButtonPressed() {
         setShowErrorModal(false)
@@ -38,10 +34,54 @@ export default function RegisterScreen() {
         navigation.navigate(Routes.LoginScreen)
     }
 
+    function Register() {
+        currentContext.setShowOverlay(true)
+
+        if (password !== passwordAgain) {
+            setErrorModalBodyText("Passwords are not same.")
+            setShowErrorModal(true)
+            return
+        }
+
+        currentContext.setShowGlobalLoading(true)
+
+        let body = {
+            "FirstName": firstName,
+            "LastName": lastName,
+            "Email": email,
+            "Password": password,
+        }
+
+        Apibase.Post({
+            url: links.register,
+            body,
+            successFunction: (data) => {
+                currentContext.setShowGlobalLoading(false)
+                setShowSuccessModal(true)
+
+                setTimeout(() => {
+                    setShowSuccessModal(false)
+                    currentContext.setShowOverlay(false)
+                    navigation.navigate(Routes.LoginScreen)
+                }, 1500);
+            },
+            errorFunction: (data) => {
+                currentContext.setShowGlobalLoading(false)
+                setErrorModalBodyText(data.message)
+                setShowErrorModal(true)
+            },
+            exceptionFunction: (err) => {
+                currentContext.setShowGlobalLoading(false)
+                setErrorModalBodyText(err.toString())
+                setShowErrorModal(true)
+            }
+        })
+    }
+
     return (
         <>
             <ErrorModal show={showErrorModal} text={errorModalBodyText} onSuccess={OnErrorModalButtonPressed} />
-            <SuccessModal show={showSuccessModal} text={successModalBodyText} onSuccess={OnSuccessModalButtonPressed} />
+            <SuccessModal show={showSuccessModal} text={"User registered. Redirecting..."} onSuccess={null} />
             <ScrollView style={styles.container}>
                 <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }}>
                     <Image
@@ -85,12 +125,10 @@ export default function RegisterScreen() {
 
                     <CustomButton
                         text={"Register"}
-                        onPress={null}
+                        onPress={Register}
                         containerStyle={styles.registerButtonContainer}
                         buttonColor={colors.primary}
                     />
-
-
                     <Text style={styles.signInText}>Already have an account? </Text>
                     <CustomButton
                         text={"Sign in"}

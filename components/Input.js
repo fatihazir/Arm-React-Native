@@ -6,7 +6,7 @@ import {
     TextInput
 } from 'react-native';
 
-const Input = ({ value, onChangeText, placeholder, keyboardType, style, secureTextEntry }) => {
+const Input = ({ value, onChangeText, placeholder, keyboardType, style, secureTextEntry, autoCapitalize }) => {
     return (
         <TextInput
             style={[styles.input, style]}
@@ -15,6 +15,7 @@ const Input = ({ value, onChangeText, placeholder, keyboardType, style, secureTe
             placeholder={placeholder}
             keyboardType={keyboardType ? keyboardType : "default"}
             secureTextEntry={secureTextEntry}
+            autoCapitalize={autoCapitalize ? autoCapitalize : false}
         />
     );
 };
