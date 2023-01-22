@@ -3,35 +3,34 @@ import { StyleSheet, FlatList, Text, View, TouchableOpacity } from 'react-native
 import CustomButton from '../components/CustomButton';
 import ErrorModal from '../components/ErrorModal';
 import { SharedContext } from '../store/context/SharedContext';
-import { useNavigation } from '@react-navigation/native';
 import { colors } from '../utils/lib/Colors';
-import Routes from '../utils/Routes';
 import Apibase from '../utils/lib/Apibase'
 import { links } from '../utils/lib/Links';
-import { width_screen } from '../utils/Dimensions';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function HomeScreen() {
+export default function TransactionGroupDetailScreen(props) {
     const currentContext = useContext(SharedContext)
-    const navigation = useNavigation()
+    const { item, transactionGroupId } = props.route.params
 
     const [showErrorModal, setShowErrorModal] = useState(false)
     const [errorModalBodyText, setErrorModalBodyText] = useState()
-    const [associations, setAssociations] = useState([])
+    const [transactions, setTransactions] = useState([])
+
 
     function OnErrorModalButtonPressed() {
         setShowErrorModal(false)
         currentContext.setShowOverlay(false)
     }
 
-    function GetTransactionGroups() {
+    function GetTransactionsByGroupId() {
         currentContext.setShowOverlay(true)
         currentContext.setShowGlobalLoading(true)
 
         Apibase.Get({
-            url: links.transactionGroups + "?userId=" + currentContext.user.id.toString(),
+            url: links.transactions + "?groupId=" + transactionGroupId.toString(),
             bearerToken: currentContext.user.token,
             successFunction: (data) => {
-                setAssociations(data.data)
+                setTransactions(data.data)
                 currentContext.setShowGlobalLoading(false)
                 currentContext.setShowOverlay(false)
             },
@@ -48,22 +47,32 @@ export default function HomeScreen() {
         })
     }
 
-    function OnNavigateToTransactionGroupPressed(transactionGroupId, item) {
-        currentContext.setDetailScreenTitle(item.alias)
-        navigation.navigate(Routes.TransactionGroupDetailScreen, { transactionGroupId, item })
+    function OnNavigateToTransactionGroupPressed(item) {
+        console.log(item);
     }
 
     useEffect(() => {
-        GetTransactionGroups()
+        GetTransactionsByGroupId()
     }, [])
 
     const renderItem = useCallback(({ item }) => (
-        <TouchableOpacity onPress={() => OnNavigateToTransactionGroupPressed(item.id, item)} key={item.id} style={styles.eachTransactionGroupContainer}>
-            <View style={styles.eachTransactionGroupTopRow}>
-                <Text style={styles.aliasText}>{item.alias}</Text>
-                <Text style={styles.eachResultCountText}>Result count: {item.resultCount}</Text>
+        <TouchableOpacity onPress={() => OnNavigateToTransactionGroupPressed(item)} key={item.id}
+            style={styles.eachAssociationGroupContainer}>
+            <View style={styles.eachAssocationGroupTopRow}>
+                {item.associations.split(',').map((eachItem, index) =>
+                    <Text style={styles.associationsText} key={index}>{eachItem}</Text>)}
+                <View style={styles.scoresAndArrowContainer}>
+                    <View>
+                        <Text style={styles.supportText}>Support: {item.support.toFixed(5)}</Text>
+                        <Text style={styles.liftText}>Lift: {item.lift.toFixed(5)}</Text>
+                        <Text style={styles.confidenceText}>Confidence: {item.confidence.toFixed(5)}</Text>
+                    </View>
+                    <View style={styles.rightArrowContainer}>
+                        <Ionicons name="arrow-forward" size={24} color="black" />
+                    </View>
+                </View>
+
             </View>
-            <Text style={styles.createdAtText}>{item.createdAt.replace('T', ' - ')}</Text>
         </TouchableOpacity>
     ), []);
 
@@ -71,17 +80,19 @@ export default function HomeScreen() {
         <>
             <ErrorModal show={showErrorModal} text={errorModalBodyText} onSuccess={OnErrorModalButtonPressed} />
             <View style={styles.container}>
-                <CustomButton
-                    text={"Refresh"}
+                {/* <CustomButton
+                    text={"Selamlar"}
                     onPress={GetTransactionGroups}
                     containerStyle={styles.signInButtonContainer}
                     buttonColor={colors.secondary}
-                />
+                /> */}
                 <FlatList
                     showsVerticalScrollIndicator={false}
-                    data={associations}
+                    data={transactions}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
+                    initialNumToRender={4}
+                    maxToRenderPerBatch={10}
                 />
             </View>
         </>
@@ -94,7 +105,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flex: 1
     },
-    eachTransactionGroupContainer: {
+    eachAssociationGroupContainer: {
         flex: 1,
         borderBottomWidth: 0.2,
         borderColor: colors.primary,
@@ -102,26 +113,35 @@ const styles = StyleSheet.create({
         padding: 12,
         marginBottom: 12,
     },
-    eachTransactionGroupTopRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+    eachAssocationGroupTopRow: {
     },
-    aliasText: {
-        fontSize: 16,
+    associationsText: {
+        fontSize: 14,
+    },
+    supportText: {
+        fontSize: 12,
+        marginTop: 4,
         fontWeight: '500'
     },
-    eachResultCountText: {
+    liftText: {
+        fontSize: 12,
+        marginTop: 2,
+        fontWeight: '500'
+    },
+    confidenceText: {
         fontSize: 14,
-        minWidth: '35%'
+        marginTop: 4,
+        fontWeight: '800'
     },
-    createdAtText: {
-        fontSize: 10,
-        paddingTop: 6
+    scoresAndArrowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flex: 1
     },
-    signInButtonContainer: {
-        marginBottom: 12,
-        alignSelf: 'flex-end',
-        height: 40,
-        width: width_screen * 0.3
-    },
+    rightArrowContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    }
+
 });

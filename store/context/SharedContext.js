@@ -9,10 +9,11 @@ function SharedContextProvider({ children }) {
     const [showOverlay, setShowOverlay] = useState(false)
     const [showGlobalLoading, setShowGlobalLoading] = useState(false)
     const [user, setUser] = useState({})
+    const [detailScreenTitle, setDetailScreenTitle] = useState()
 
     function SetUser(user) {
-        AsyncStorage.setItem('user', JSON.stringify(user))
         setUser(user)
+        AsyncStorage.setItem('user', JSON.stringify(user))
     }
 
     const value = {
@@ -21,7 +22,9 @@ function SharedContextProvider({ children }) {
         showGlobalLoading,
         setShowGlobalLoading,
         user,
-        SetUser
+        SetUser,
+        detailScreenTitle,
+        setDetailScreenTitle
     }
 
     return (

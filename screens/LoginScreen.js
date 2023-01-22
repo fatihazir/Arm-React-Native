@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { StyleSheet, Image, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
+import { StyleSheet, Image, KeyboardAvoidingView, ScrollView, Text } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import ErrorModal from '../components/ErrorModal';
 import Input from '../components/Input';
@@ -17,8 +17,8 @@ export default function LoginScreen() {
     const { dispatch } = useNavigation()
     const navigation = useNavigation()
 
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
+    const [email, setEmail] = useState("user@gmail.com")
+    const [password, setPassword] = useState("12345")
     const [showErrorModal, setShowErrorModal] = useState(false)
     const [errorModalBodyText, setErrorModalBodyText] = useState()
     const [showSuccessModal, setShowSuccessModal] = useState(false)
