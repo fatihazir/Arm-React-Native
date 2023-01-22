@@ -7,15 +7,19 @@ import { colors } from '../utils/lib/Colors';
 import Apibase from '../utils/lib/Apibase'
 import { links } from '../utils/lib/Links';
 import { Ionicons } from '@expo/vector-icons';
+import { width_screen } from '../utils/Dimensions';
+
+let resultCount = 0
 
 export default function TransactionGroupDetailScreen(props) {
     const currentContext = useContext(SharedContext)
-    const { item, transactionGroupId } = props.route.params
+    const { transactionGroupId } = props.route.params
 
     const [showErrorModal, setShowErrorModal] = useState(false)
     const [errorModalBodyText, setErrorModalBodyText] = useState()
     const [transactions, setTransactions] = useState([])
-
+    const [associationOrderType, setAssociationOrderType] = useState(null)
+    const [count, setCount] = useState()
 
     function OnErrorModalButtonPressed() {
         setShowErrorModal(false)
@@ -31,6 +35,7 @@ export default function TransactionGroupDetailScreen(props) {
             bearerToken: currentContext.user.token,
             successFunction: (data) => {
                 setTransactions(data.data)
+                resultCount = data.data.length
                 currentContext.setShowGlobalLoading(false)
                 currentContext.setShowOverlay(false)
             },
@@ -47,8 +52,19 @@ export default function TransactionGroupDetailScreen(props) {
         })
     }
 
-    function OnNavigateToTransactionGroupPressed(item) {
-        console.log(item);
+    function HandleData() {
+        let handledData = transactions.slice()
+
+        if (associationOrderType !== null) {
+            handledData = handledData.filter(item =>
+                item.isPositive == associationOrderType)
+        }
+
+        resultCount = handledData.length
+        if (resultCount !== count) {
+            setCount(resultCount)
+        }
+        return handledData
     }
 
     useEffect(() => {
@@ -56,7 +72,7 @@ export default function TransactionGroupDetailScreen(props) {
     }, [])
 
     const renderItem = useCallback(({ item }) => (
-        <TouchableOpacity onPress={() => OnNavigateToTransactionGroupPressed(item)} key={item.id}
+        <TouchableOpacity key={item.id}
             style={styles.eachAssociationGroupContainer}>
             <View style={styles.eachAssocationGroupTopRow}>
                 {item.associations.split(',').map((eachItem, index) =>
@@ -80,15 +96,30 @@ export default function TransactionGroupDetailScreen(props) {
         <>
             <ErrorModal show={showErrorModal} text={errorModalBodyText} onSuccess={OnErrorModalButtonPressed} />
             <View style={styles.container}>
-                {/* <CustomButton
-                    text={"Selamlar"}
-                    onPress={GetTransactionGroups}
-                    containerStyle={styles.signInButtonContainer}
-                    buttonColor={colors.secondary}
-                /> */}
+                <View style={styles.buttonsContainer}>
+                    <CustomButton
+                        text={"All"}
+                        onPress={() => setAssociationOrderType(null)}
+                        containerStyle={styles.allButton}
+                        buttonColor={colors.secondary}
+                    />
+                    <CustomButton
+                        text={"Strong associations"}
+                        onPress={() => setAssociationOrderType(1)}
+                        containerStyle={styles.strongButton}
+                        buttonColor={colors.secondary}
+                    />
+                    <CustomButton
+                        text={"Weak associations"}
+                        onPress={() => setAssociationOrderType(0)}
+                        containerStyle={styles.leastButton}
+                        buttonColor={colors.secondary}
+                    />
+                </View>
+                <Text style={styles.resultCountText}>Result count: {count}</Text>
                 <FlatList
                     showsVerticalScrollIndicator={false}
-                    data={transactions}
+                    data={HandleData()}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     initialNumToRender={4}
@@ -142,6 +173,25 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'flex-end'
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 40,
+        marginBottom: 12
+    },
+    allButton: {
+        width: width_screen * .2
+    },
+    strongButton: {
+        width: width_screen * .3
+    },
+    leastButton: {
+        width: width_screen * .3
+    },
+    resultCountText: {
+        fontWeight: '600',
+        alignSelf: 'flex-end'
     }
 
 });

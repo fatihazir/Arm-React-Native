@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { width_screen } from '../utils/Dimensions';
 
 const BasicHeader = ({ title, activateGoBack }) => {
     const navigation = useNavigation()
@@ -17,7 +18,7 @@ const BasicHeader = ({ title, activateGoBack }) => {
                     <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
                         <Ionicons name="arrow-back-sharp" size={24} color="black" />
                     </TouchableOpacity>}
-                <Text style={styles.headerText}>{title}</Text>
+                <Text numberOfLines={1} style={styles.headerText}>{title}</Text>
             </View>
         </View>
     );
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
         fontWeight: '800',
         letterSpacing: 2,
         color: 'black',
+        maxWidth: width_screen * .7
     }
 });
 

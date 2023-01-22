@@ -50,7 +50,7 @@ export default function HomeScreen() {
 
     function OnNavigateToTransactionGroupPressed(transactionGroupId, item) {
         currentContext.setDetailScreenTitle(item.alias)
-        navigation.navigate(Routes.TransactionGroupDetailScreen, { transactionGroupId, item })
+        navigation.navigate(Routes.TransactionGroupDetailScreen, { transactionGroupId })
     }
 
     useEffect(() => {
