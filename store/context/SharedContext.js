@@ -16,6 +16,11 @@ function SharedContextProvider({ children }) {
         AsyncStorage.setItem('user', JSON.stringify(user))
     }
 
+    function RemoveUser() {
+        setUser({})
+        AsyncStorage.removeItem("user")
+    }
+
     const value = {
         showOverlay,
         setShowOverlay,
@@ -24,7 +29,8 @@ function SharedContextProvider({ children }) {
         user,
         SetUser,
         detailScreenTitle,
-        setDetailScreenTitle
+        setDetailScreenTitle,
+        RemoveUser
     }
 
     return (

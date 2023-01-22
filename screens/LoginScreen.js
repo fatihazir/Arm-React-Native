@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Image, KeyboardAvoidingView, ScrollView, Text } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import ErrorModal from '../components/ErrorModal';

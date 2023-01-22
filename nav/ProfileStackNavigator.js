@@ -9,12 +9,12 @@ const Stack = createNativeStackNavigator();
 
 const ProfileStackNavigator = () => {
     return (
-        <NavigationContainer independent={true}>
-            <Stack.Navigator>
-                <Stack.Screen name={Routes.ProfileScreen} component={ProfileScreen}
-                    options={{ header: (() => <BasicHeader title="Transaction Groups" />) }} />
-            </Stack.Navigator>
-        </NavigationContainer>
+
+        <Stack.Navigator>
+            <Stack.Screen name={Routes.ProfileScreen} component={ProfileScreen}
+                options={{ header: (() => <BasicHeader title="Transaction Groups" />) }} />
+        </Stack.Navigator>
+
     )
 };
 

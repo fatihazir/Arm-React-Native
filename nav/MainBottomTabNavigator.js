@@ -13,27 +13,27 @@ const Tab = createBottomTabNavigator();
 export default function MainBottomTabNavigator() {
 
     return (
-        <NavigationContainer independent={true}>
-            <Tab.Navigator >
-                <Tab.Screen name="Transaction Groups" component={TransactionsStackNavigator}
-                    options={{
-                        headerShown: false,
-                        tabBarIcon: (({ focused }) =>
-                            focused ?
-                                <Foundation name="results" size={24} color={colors.primary} />
-                                :
-                                <Foundation name="results" size={24} color="black" />)
-                    }} />
-                <Tab.Screen name="Profile" component={ProfileScreen}
-                    options={{
-                        header: (() => <BasicHeader title="Profile" />),
-                        tabBarIcon: (({ focused }) =>
-                            focused ?
-                                <Ionicons name="person" size={24} color={colors.primary} />
-                                :
-                                <Ionicons name="person" size={24} color="black" />)
-                    }} />
-            </Tab.Navigator>
-        </NavigationContainer>
+
+        <Tab.Navigator >
+            <Tab.Screen name="Transaction Groups" component={TransactionsStackNavigator}
+                options={{
+                    headerShown: false,
+                    tabBarIcon: (({ focused }) =>
+                        focused ?
+                            <Foundation name="results" size={24} color={colors.primary} />
+                            :
+                            <Foundation name="results" size={24} color="black" />)
+                }} />
+            <Tab.Screen name="Profile" component={ProfileScreen}
+                options={{
+                    header: (() => <BasicHeader title="Profile" />),
+                    tabBarIcon: (({ focused }) =>
+                        focused ?
+                            <Ionicons name="person" size={24} color={colors.primary} />
+                            :
+                            <Ionicons name="person" size={24} color="black" />)
+                }} />
+        </Tab.Navigator>
+
     );
 }

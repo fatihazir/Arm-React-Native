@@ -13,14 +13,14 @@ const TransactionsStackNavigator = () => {
     const currentContext = useContext(SharedContext)
 
     return (
-        <NavigationContainer independent={true}>
-            <Stack.Navigator>
-                <Stack.Screen name={Routes.HomeScreen} component={HomeScreen}
-                    options={{ header: (() => <BasicHeader title="Home" />) }} />
-                <Stack.Screen name={Routes.TransactionGroupDetailScreen} component={TransactionGroupDetailScreen}
-                    options={{ header: (() => <BasicHeader title={currentContext.detailScreenTitle} activateGoBack={true} />) }} />
-            </Stack.Navigator>
-        </NavigationContainer>
+
+        <Stack.Navigator>
+            <Stack.Screen name={Routes.HomeScreen} component={HomeScreen}
+                options={{ header: (() => <BasicHeader title="Home" />) }} />
+            <Stack.Screen name={Routes.TransactionGroupDetailScreen} component={TransactionGroupDetailScreen}
+                options={{ header: (() => <BasicHeader title={currentContext.detailScreenTitle} activateGoBack={true} />) }} />
+        </Stack.Navigator>
+
     )
 };
 
