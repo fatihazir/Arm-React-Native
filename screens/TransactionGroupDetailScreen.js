@@ -207,10 +207,10 @@ const styles = StyleSheet.create({
         width: width_screen * .2
     },
     strongButton: {
-        width: width_screen * .3
+        width: width_screen * .30
     },
     leastButton: {
-        width: width_screen * .3
+        width: width_screen * .35
     },
     filterToggleAndCountContainer: {
         flexDirection: 'row',
