@@ -8,6 +8,7 @@ import Apibase from '../utils/lib/Apibase'
 import { links } from '../utils/lib/Links';
 import { Ionicons } from '@expo/vector-icons';
 import { width_screen } from '../utils/Dimensions';
+import Input from '../components/Input';
 
 let resultCount = 0
 
@@ -20,6 +21,8 @@ export default function TransactionGroupDetailScreen(props) {
     const [transactions, setTransactions] = useState([])
     const [associationOrderType, setAssociationOrderType] = useState(null)
     const [count, setCount] = useState()
+    const [filterText, setFilterText] = useState()
+    const [showFilterInput, setShowFilterInput] = useState(false)
 
     function OnErrorModalButtonPressed() {
         setShowErrorModal(false)
@@ -55,6 +58,12 @@ export default function TransactionGroupDetailScreen(props) {
     function HandleData() {
         let handledData = transactions.slice()
 
+        if (filterText && filterText.length > 1) {
+            handledData = handledData.filter(item =>
+                item.associations.toLowerCase().includes(filterText.toLowerCase())
+            )
+        }
+
         if (associationOrderType !== null) {
             handledData = handledData.filter(item =>
                 item.isPositive == associationOrderType)
@@ -70,6 +79,7 @@ export default function TransactionGroupDetailScreen(props) {
     useEffect(() => {
         GetTransactionsByGroupId()
     }, [])
+
 
     const renderItem = useCallback(({ item }) => (
         <TouchableOpacity key={item.id}
@@ -87,7 +97,6 @@ export default function TransactionGroupDetailScreen(props) {
                         <Ionicons name="arrow-forward" size={24} color="black" />
                     </View>
                 </View>
-
             </View>
         </TouchableOpacity>
     ), []);
@@ -116,7 +125,21 @@ export default function TransactionGroupDetailScreen(props) {
                         buttonColor={colors.secondary}
                     />
                 </View>
-                <Text style={styles.resultCountText}>Result count: {count}</Text>
+                <View style={styles.filterToggleAndCountContainer}>
+                    <TouchableOpacity onPress={() => setShowFilterInput(!showFilterInput)}>
+                        <Text style={styles.textFilterLabel}>{showFilterInput ? "Hide text filter" : "Show text filter"}</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.resultCountText}>Result count: {count}</Text>
+                </View>
+                {showFilterInput &&
+                    <Input
+                        style={styles.filterTextInputContainer}
+                        value={filterText}
+                        onChangeText={setFilterText}
+                        placeholder={"Filter text"}
+                    />
+                }
+
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={HandleData()}
@@ -189,9 +212,20 @@ const styles = StyleSheet.create({
     leastButton: {
         width: width_screen * .3
     },
+    filterToggleAndCountContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 12
+    },
     resultCountText: {
         fontWeight: '600',
-        alignSelf: 'flex-end'
+    },
+    textFilterLabel: {
+        fontWeight: '500',
+        color: colors.secondary
+    },
+    filterTextInputContainer: {
+        marginBottom: 12,
     }
 
 });

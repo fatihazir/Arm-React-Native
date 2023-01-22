@@ -5,14 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, Foundation } from '@expo/vector-icons';
 import { colors } from '../utils/lib/Colors';
 import TransactionsStackNavigator from './TransactionsStackNavigator';
-
-function SettingsScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Profile!</Text>
-        </View>
-    );
-}
+import ProfileScreen from '../screens/ProfileScreen';
+import BasicHeader from '../components/BasicHeader';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,17 +14,19 @@ export default function MainBottomTabNavigator() {
 
     return (
         <NavigationContainer independent={true}>
-            <Tab.Navigator screenOptions={{ headerShown: false }}>
+            <Tab.Navigator >
                 <Tab.Screen name="Transaction Groups" component={TransactionsStackNavigator}
                     options={{
+                        headerShown: false,
                         tabBarIcon: (({ focused }) =>
                             focused ?
                                 <Foundation name="results" size={24} color={colors.primary} />
                                 :
                                 <Foundation name="results" size={24} color="black" />)
                     }} />
-                <Tab.Screen name="Profile" component={SettingsScreen}
+                <Tab.Screen name="Profile" component={ProfileScreen}
                     options={{
+                        header: (() => <BasicHeader title="Profile" />),
                         tabBarIcon: (({ focused }) =>
                             focused ?
                                 <Ionicons name="person" size={24} color={colors.primary} />
