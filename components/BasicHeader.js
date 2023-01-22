@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Image,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -14,11 +15,14 @@ const BasicHeader = ({ title, activateGoBack }) => {
     return (
         <View style={styles.container}>
             <View style={styles.rowParent}>
-                {activateGoBack &&
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
-                        <Ionicons name="arrow-back-sharp" size={24} color="black" />
-                    </TouchableOpacity>}
-                <Text numberOfLines={1} style={styles.headerText}>{title}</Text>
+                <>
+                    {activateGoBack &&
+                        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
+                            <Ionicons name="arrow-back-sharp" size={24} color="black" />
+                        </TouchableOpacity>}
+                    <Text numberOfLines={1} style={styles.headerText}>{title}</Text>
+                </>
+                <Image source={require('../assets/logo.png')} style={styles.image} resizeMode="contain" />
             </View>
         </View>
     );
@@ -34,6 +38,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingHorizontal: 22,
         alignItems: 'center',
+        justifyContent: 'space-between'
     },
     iconContainer: {
         padding: 12,
@@ -45,6 +50,11 @@ const styles = StyleSheet.create({
         letterSpacing: 2,
         color: 'black',
         maxWidth: width_screen * .7
+    },
+    image: {
+        width: 40,
+        height: 40,
+
     }
 });
 
