@@ -13,7 +13,6 @@ export default function App() {
         <Overlay />
         <GlobalLoading />
       </SharedContextProvider>
-      <StatusBar style="light" />
     </SafeAreaView>
   );
 }

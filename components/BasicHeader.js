@@ -4,7 +4,8 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    View
+    View,
+    Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +14,7 @@ import { width_screen } from '../utils/Dimensions';
 const BasicHeader = ({ title, activateGoBack }) => {
     const navigation = useNavigation()
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, Platform.OS == 'android' && { marginTop: 20 }]}>
             <View style={styles.rowParent}>
                 <>
                     {activateGoBack &&
